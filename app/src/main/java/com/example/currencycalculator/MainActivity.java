@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity  {
     Spinner spinner1, spinner2;
     EditText shownText;
     Currencies apiCurs;
-    float mValueOne, mValueTwo;
+    float mValueOne = 0, mValueTwo;
 
     Operations currentOp = Operations.NOOP;
 
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity  {
         Currencies curS = new Currencies();
         apiCurs = curS;
         addItemsOnSpinners();
+        shownText.setText(null);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +132,12 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
-                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                    try {
+                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                    }catch (NumberFormatException e) {
+
+                    }
+
                 }
                     currentOp = Operations.ADDITION;
                     shownText.setText(null);
@@ -142,7 +148,12 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
-                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                    try {
+                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                    }
+                    catch (NumberFormatException e) {
+                        /* Pass. */
+                    }
                 }
                 currentOp = Operations.SUBTRACTION;
                 shownText.setText(null);
@@ -153,7 +164,12 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
-                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                    try {
+                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                    }
+                     catch (NumberFormatException e) {
+                        /* Pass. */
+                    }
                 }
                 currentOp = Operations.MULTIPLICATION;
                 shownText.setText(null);
@@ -164,7 +180,12 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
-                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                    try {
+                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                    }
+                    catch (NumberFormatException e) {
+                        /* Pass. */
+                    }
                 }
                 currentOp = Operations.DIVISION;
                 shownText.setText(null);
@@ -207,7 +228,11 @@ public class MainActivity extends AppCompatActivity  {
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueTwo = Float.parseFloat(shownText.getText() + "");
+                try {
+                    mValueTwo = Float.parseFloat(shownText.getText() + "");
+                } catch (NumberFormatException e) {
+                    mValueTwo = 0;
+                }
 
                 if (currentOp == Operations.ADDITION) {
                     shownText.setText(mValueOne + mValueTwo + "");
