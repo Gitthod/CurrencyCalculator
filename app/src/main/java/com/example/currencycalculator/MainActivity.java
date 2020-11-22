@@ -7,15 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
-import android.widget.AdapterView;
-import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
-
-import com.google.gson.JsonObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
+enum Operations{
+    ADDITION, MULTIPLICATION, DIVISION, SUBTRACTION, NOOP
+}
+
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -27,7 +25,7 @@ public class MainActivity extends AppCompatActivity  {
     Currencies apiCurs;
     float mValueOne, mValueTwo;
 
-    boolean isAddition, isSubtraction, isMultiplication, isDivision;
+    Operations currentOp = Operations.NOOP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,22 +130,21 @@ public class MainActivity extends AppCompatActivity  {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (shownText == null) {
-                    shownText.setText("");
-                } else {
+                if (currentOp == Operations.NOOP) {
                     mValueOne = Float.parseFloat(shownText.getText() + "");
-                    isAddition = true;
-                    shownText.setText(null);
                 }
+                    currentOp = Operations.ADDITION;
+                    shownText.setText(null);
             }
         });
 
         buttonSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueOne = Float.parseFloat(shownText.getText() + "");
-                isSubtraction = true;
+                if (currentOp == Operations.NOOP) {
+                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                }
+                currentOp = Operations.SUBTRACTION;
                 shownText.setText(null);
             }
         });
@@ -155,8 +152,10 @@ public class MainActivity extends AppCompatActivity  {
         buttonMul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueOne = Float.parseFloat(shownText.getText() + "");
-                isMultiplication = true;
+                if (currentOp == Operations.NOOP) {
+                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                }
+                currentOp = Operations.MULTIPLICATION;
                 shownText.setText(null);
             }
         });
@@ -164,8 +163,10 @@ public class MainActivity extends AppCompatActivity  {
         buttonDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueOne = Float.parseFloat(shownText.getText() + "");
-                isDivision = true;
+                if (currentOp == Operations.NOOP) {
+                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                }
+                currentOp = Operations.DIVISION;
                 shownText.setText(null);
             }
         });
@@ -178,15 +179,9 @@ public class MainActivity extends AppCompatActivity  {
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isMultiplication == true ||
-                        isAddition == true ||
-                        isMultiplication == true ||
-                        isSubtraction == true)
+                if (currentOp != Operations.NOOP)
                 {
-                    isMultiplication = false;
-                    isAddition = false;
-                    isMultiplication = false;
-                    isSubtraction = false;
+                    currentOp = Operations.NOOP;
                     shownText.setText(mValueOne + "");
                 }
                 else
@@ -214,25 +209,22 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 mValueTwo = Float.parseFloat(shownText.getText() + "");
 
-                if (isAddition == true) {
+                if (currentOp == Operations.ADDITION) {
                     shownText.setText(mValueOne + mValueTwo + "");
-                    isAddition = false;
                 }
 
-                if (isSubtraction == true) {
+                if (currentOp == Operations.SUBTRACTION) {
                     shownText.setText(mValueOne - mValueTwo + "");
-                    isSubtraction = false;
                 }
 
-                if (isMultiplication == true) {
+                if (currentOp == Operations.MULTIPLICATION) {
                     shownText.setText(mValueOne * mValueTwo + "");
-                    isMultiplication = false;
                 }
 
-                if (isDivision == true) {
+                if (currentOp == Operations.DIVISION) {
                     shownText.setText(mValueOne / mValueTwo + "");
-                    isDivision = false;
                 }
+                currentOp = Operations.NOOP;
             }
         });
 
