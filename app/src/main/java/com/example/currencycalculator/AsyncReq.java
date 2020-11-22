@@ -12,7 +12,6 @@ class AsyncReq extends AsyncTask<Void, Void, String> {
     private Exception exception;
     private HttpURLConnection connection;
     private URL url;
-    String debug;
     String response ;
     boolean finished = false;
     @Override
@@ -51,6 +50,5 @@ class AsyncReq extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(Void nothing) {
         // TODO: check this.exception
         // TODO: do something with the feed
-
     }
 }

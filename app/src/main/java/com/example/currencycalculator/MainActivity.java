@@ -52,11 +52,12 @@ public class MainActivity extends AppCompatActivity  {
         buttonConvert = findViewById(R.id.buttonConvert);
         buttonEqual = findViewById(R.id.buttoneql);
         crunchifyEditText = findViewById(R.id.edt1);
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        spinner2 = (Spinner) findViewById(R.id.spinner2);
         Currencies curS = new Currencies();
         apiCurs = curS;
         addItemsOnSpinners();
         addListenerOnSpinnerItemSelection();
-        addListenerOnButton();
 
        /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, users);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -245,15 +246,8 @@ public class MainActivity extends AppCompatActivity  {
     public void addListenerOnSpinnerItemSelection() {
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
-        spinner1.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-        spinner2.setOnItemSelectedListener(new CustomOnItemSelectedListener());
     }
-    // get the selected dropdown list value
-    public void addListenerOnButton() {
-
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
-    }
+    
     public void addItemsOnSpinners() {
 
         spinner2 = (Spinner) findViewById(R.id.spinner2);
