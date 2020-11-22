@@ -23,11 +23,11 @@ public class MainActivity extends AppCompatActivity  {
             button7, button8, button9, buttonAdd, buttonSub, buttonDivision,
             buttonMul, button10, buttonConvert, buttonEqual, buttonC;
     Spinner spinner1, spinner2;
-    EditText crunchifyEditText;
+    EditText shownText;
     Currencies apiCurs;
     float mValueOne, mValueTwo;
 
-    boolean crunchifyAddition, mSubtract, crunchifyMultiplication, crunchifyDivision;
+    boolean isAddition, mSubtract, isMultiplication, isDivision;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,86 +51,80 @@ public class MainActivity extends AppCompatActivity  {
         buttonDivision = findViewById(R.id.buttondiv);
         buttonConvert = findViewById(R.id.buttonConvert);
         buttonEqual = findViewById(R.id.buttoneql);
-        crunchifyEditText = findViewById(R.id.edt1);
+        shownText = findViewById(R.id.edt1);
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
         Currencies curS = new Currencies();
         apiCurs = curS;
         addItemsOnSpinners();
-        addListenerOnSpinnerItemSelection();
-
-       /* ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, users);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        *//*spin.setAdapter(adapter);
-        spin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);*/
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "1");
+                shownText.setText(shownText.getText() + "1");
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "2");
+                shownText.setText(shownText.getText() + "2");
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "3");
+                shownText.setText(shownText.getText() + "3");
             }
         });
 
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "4");
+                shownText.setText(shownText.getText() + "4");
             }
         });
 
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "5");
+                shownText.setText(shownText.getText() + "5");
             }
         });
 
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "6");
+                shownText.setText(shownText.getText() + "6");
             }
         });
 
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "7");
+                shownText.setText(shownText.getText() + "7");
             }
         });
 
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "8");
+                shownText.setText(shownText.getText() + "8");
             }
         });
 
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "9");
+                shownText.setText(shownText.getText() + "9");
             }
         });
 
         button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + "0");
+                shownText.setText(shownText.getText() + "0");
             }
         });
 
@@ -138,12 +132,12 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
 
-                if (crunchifyEditText == null) {
-                    crunchifyEditText.setText("");
+                if (shownText == null) {
+                    shownText.setText("");
                 } else {
-                    mValueOne = Float.parseFloat(crunchifyEditText.getText() + "");
-                    crunchifyAddition = true;
-                    crunchifyEditText.setText(null);
+                    mValueOne = Float.parseFloat(shownText.getText() + "");
+                    isAddition = true;
+                    shownText.setText(null);
                 }
             }
         });
@@ -151,67 +145,66 @@ public class MainActivity extends AppCompatActivity  {
         buttonSub.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueOne = Float.parseFloat(crunchifyEditText.getText() + "");
+                mValueOne = Float.parseFloat(shownText.getText() + "");
                 mSubtract = true;
-                crunchifyEditText.setText(null);
+                shownText.setText(null);
             }
         });
 
         buttonMul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueOne = Float.parseFloat(crunchifyEditText.getText() + "");
-                crunchifyMultiplication = true;
-                crunchifyEditText.setText(null);
+                mValueOne = Float.parseFloat(shownText.getText() + "");
+                isMultiplication = true;
+                shownText.setText(null);
             }
         });
 
         buttonDivision.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueOne = Float.parseFloat(crunchifyEditText.getText() + "");
-                crunchifyDivision = true;
-                crunchifyEditText.setText(null);
+                mValueOne = Float.parseFloat(shownText.getText() + "");
+                isDivision = true;
+                shownText.setText(null);
             }
         });
         buttonC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText("");
+                shownText.setText("");
             }
         });
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mValueTwo = Float.parseFloat(crunchifyEditText.getText() + "");
+                mValueTwo = Float.parseFloat(shownText.getText() + "");
 
-                if (crunchifyAddition == true) {
-                    crunchifyEditText.setText(mValueOne + mValueTwo + "");
-                    crunchifyAddition = false;
+                if (isAddition == true) {
+                    shownText.setText(mValueOne + mValueTwo + "");
+                    isAddition = false;
                 }
 
                 if (mSubtract == true) {
-                    crunchifyEditText.setText(mValueOne - mValueTwo + "");
+                    shownText.setText(mValueOne - mValueTwo + "");
                     mSubtract = false;
                 }
 
-                if (crunchifyMultiplication == true) {
-                    crunchifyEditText.setText(mValueOne * mValueTwo + "");
-                    crunchifyMultiplication = false;
+                if (isMultiplication == true) {
+                    shownText.setText(mValueOne * mValueTwo + "");
+                    isMultiplication = false;
                 }
 
-                if (crunchifyDivision == true) {
-                    crunchifyEditText.setText(mValueOne / mValueTwo + "");
-                    crunchifyDivision = false;
+                if (isDivision == true) {
+                    shownText.setText(mValueOne / mValueTwo + "");
+                    isDivision = false;
                 }
             }
         });
 
-
         button10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                crunchifyEditText.setText(crunchifyEditText.getText() + ".");
+                shownText.setText(shownText.getText() + ".");
             }
         });
 
@@ -223,31 +216,11 @@ public class MainActivity extends AppCompatActivity  {
                 float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
                 float toVal = apiCurs.rates.get(toCur).getAsFloat();
                 float modifier = toVal / fromVal;
-                crunchifyEditText.setText(Float.parseFloat(crunchifyEditText.getText() + "") * modifier + "");
+                shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
             }
         });
-       /* spin.setOnItemSelectedListener(new OnItemSelectedListener()
-        {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                if(selectedItem.equals("Add new category"))
-                {
-                    // do your stuff
-                }
-            } // to close the onItemSelected
-            public void onNothingSelected(AdapterView<?> parent)
-            {
-
-            }
-        });*/
-
     }
-    public void addListenerOnSpinnerItemSelection() {
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
-    }
-    
+
     public void addItemsOnSpinners() {
 
         spinner2 = (Spinner) findViewById(R.id.spinner2);
