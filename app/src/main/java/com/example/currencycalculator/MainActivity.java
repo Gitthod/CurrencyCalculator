@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity  {
     Spinner spinner1, spinner2;
     EditText shownText;
     Currencies apiCurs;
-    float mValueOne = 0, mValueTwo;
+    float accumulator = 0;
 
     Operations currentOp = Operations.NOOP;
 
@@ -133,14 +133,15 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
                     try {
-                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                        accumulator = Float.parseFloat(shownText.getText() + "");
                     }catch (NumberFormatException e) {
 
                     }
 
                 }
-                    currentOp = Operations.ADDITION;
-                    shownText.setText(null);
+                evaluateCurrent ();
+                currentOp = Operations.ADDITION;
+                shownText.setText(null);
             }
         });
 
@@ -149,12 +150,13 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
                     try {
-                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                        accumulator = Float.parseFloat(shownText.getText() + "");
                     }
                     catch (NumberFormatException e) {
                         /* Pass. */
                     }
                 }
+                evaluateCurrent ();
                 currentOp = Operations.SUBTRACTION;
                 shownText.setText(null);
             }
@@ -165,12 +167,13 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
                     try {
-                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                        accumulator = Float.parseFloat(shownText.getText() + "");
                     }
-                     catch (NumberFormatException e) {
+                    catch (NumberFormatException e) {
                         /* Pass. */
                     }
                 }
+                evaluateCurrent ();
                 currentOp = Operations.MULTIPLICATION;
                 shownText.setText(null);
             }
@@ -181,12 +184,13 @@ public class MainActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 if (currentOp == Operations.NOOP) {
                     try {
-                        mValueOne = Float.parseFloat(shownText.getText() + "");
+                        accumulator = Float.parseFloat(shownText.getText() + "");
                     }
                     catch (NumberFormatException e) {
                         /* Pass. */
                     }
                 }
+                evaluateCurrent ();
                 currentOp = Operations.DIVISION;
                 shownText.setText(null);
             }
@@ -195,6 +199,7 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 shownText.setText("");
+                accumulator = 0;
             }
         });
         backspace.setOnClickListener(new View.OnClickListener() {
@@ -220,27 +225,9 @@ public class MainActivity extends AppCompatActivity  {
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    mValueTwo = Float.parseFloat(shownText.getText() + "");
-                } catch (NumberFormatException e) {
-                    mValueTwo = 0;
-                }
+                evaluateCurrent ();
 
-                if (currentOp == Operations.ADDITION) {
-                    shownText.setText(mValueOne + mValueTwo + "");
-                }
-
-                if (currentOp == Operations.SUBTRACTION) {
-                    shownText.setText(mValueOne - mValueTwo + "");
-                }
-
-                if (currentOp == Operations.MULTIPLICATION) {
-                    shownText.setText(mValueOne * mValueTwo + "");
-                }
-
-                if (currentOp == Operations.DIVISION) {
-                    shownText.setText(mValueOne / mValueTwo + "");
-                }
+                shownText.setText(accumulator + "");
                 currentOp = Operations.NOOP;
             }
         });
@@ -290,5 +277,32 @@ public class MainActivity extends AppCompatActivity  {
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(dataAdapter);
         spinner1.setAdapter(dataAdapter);
+    }
+
+    private void evaluateCurrent ()
+    {
+        float typed;
+        try {
+            typed = Float.parseFloat(shownText.getText() + "");
+        } catch (NumberFormatException e) {
+            typed = 0;
+        }
+        if (shownText.getText().toString().equals("") == false) {
+            if (currentOp == Operations.ADDITION) {
+                accumulator += typed;
+            }
+
+            if (currentOp == Operations.SUBTRACTION) {
+                accumulator -= typed;
+            }
+
+            if (currentOp == Operations.MULTIPLICATION) {
+                accumulator *= typed;
+            }
+
+            if (currentOp == Operations.DIVISION) {
+                accumulator /= typed;
+            }
+        }
     }
 }
