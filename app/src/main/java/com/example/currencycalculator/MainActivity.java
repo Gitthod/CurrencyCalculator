@@ -187,14 +187,24 @@ public class MainActivity extends AppCompatActivity  {
                     isAddition = false;
                     isMultiplication = false;
                     isSubtraction = false;
-                    shownText.setText(mValueOne +"");
+                    shownText.setText(mValueOne + "");
                 }
                 else
                 {
                   String text =  shownText.getText() + "";
                     if (text != null && text.length() >0)
                     {
-                        shownText.setText(text.substring(0, text.length() - 1));
+                        try
+                        {
+                            /* Check if the new string is an actual number otherwise clear the text. */
+                            text = text.substring(0, text.length() - 1);
+                            Double.parseDouble(text);
+                            shownText.setText(text);
+                        }
+                        catch(NumberFormatException e)
+                        {
+                            shownText.setText(null);
+                        }
                     }
                 }
             }
