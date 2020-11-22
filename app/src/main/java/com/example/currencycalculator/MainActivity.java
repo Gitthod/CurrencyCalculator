@@ -200,27 +200,19 @@ public class MainActivity extends AppCompatActivity  {
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentOp != Operations.NOOP)
+                String text =  shownText.getText() + "";
+                if (text != null && text.length() >0)
                 {
-                    currentOp = Operations.NOOP;
-                    shownText.setText(mValueOne + "");
-                }
-                else
-                {
-                  String text =  shownText.getText() + "";
-                    if (text != null && text.length() >0)
+                    try
                     {
-                        try
-                        {
-                            /* Check if the new string is an actual number otherwise clear the text. */
-                            text = text.substring(0, text.length() - 1);
-                            Double.parseDouble(text);
-                            shownText.setText(text);
-                        }
-                        catch(NumberFormatException e)
-                        {
-                            shownText.setText(null);
-                        }
+                        /* Check if the new string is an actual number otherwise clear the text. */
+                        text = text.substring(0, text.length() - 1);
+                        Double.parseDouble(text);
+                        shownText.setText(text);
+                    }
+                    catch(NumberFormatException e)
+                    {
+                        shownText.setText(null);
                     }
                 }
             }
