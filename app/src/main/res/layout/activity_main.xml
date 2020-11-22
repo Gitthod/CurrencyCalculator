@@ -135,6 +135,7 @@
         android:layout_alignStart="@+id/buttonsub"
         android:layout_alignLeft="@+id/buttonsub"
         android:layout_alignEnd="@+id/buttonsub"
+        android:layout_alignRight="@+id/buttonsub"
         android:text="*" />
 
     <Button
@@ -169,15 +170,26 @@
         android:text="/" />
 
     <Button
+        android:id="@+id/backspace"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonC"
+        android:layout_alignStart="@+id/buttonC"
+        android:layout_alignLeft="@+id/buttonC"
+        android:layout_alignEnd="@+id/buttondiv"
+        android:layout_alignRight="@+id/buttondiv"
+        android:text="Backspace" />
+
+    <Button
         android:id="@+id/buttoneql"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button0"
+        android:layout_below="@+id/backspace"
         android:layout_alignStart="@+id/button10"
         android:layout_alignLeft="@+id/button10"
         android:layout_alignEnd="@+id/buttondiv"
         android:layout_alignRight="@+id/buttondiv"
-        android:layout_marginTop="37dp"
         android:text="=" />
 
     <Spinner

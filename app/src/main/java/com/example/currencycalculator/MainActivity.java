@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity  {
 
     Button button0, button1, button2, button3, button4, button5, button6,
             button7, button8, button9, buttonAdd, buttonSub, buttonDivision,
-            buttonMul, button10, buttonConvert, buttonEqual, buttonC;
+            buttonMul, button10, buttonConvert, buttonEqual, buttonC, backspace;
     Spinner spinner1, spinner2;
     EditText shownText;
     Currencies apiCurs;
     float mValueOne, mValueTwo;
 
-    boolean isAddition, mSubtract, isMultiplication, isDivision;
+    boolean isAddition, isSubtraction, isMultiplication, isDivision;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity  {
         buttonConvert = findViewById(R.id.buttonConvert);
         buttonEqual = findViewById(R.id.buttoneql);
         shownText = findViewById(R.id.edt1);
+        backspace = findViewById(R.id.backspace);
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner2 = (Spinner) findViewById(R.id.spinner2);
         Currencies curS = new Currencies();
@@ -146,7 +147,7 @@ public class MainActivity extends AppCompatActivity  {
             @Override
             public void onClick(View v) {
                 mValueOne = Float.parseFloat(shownText.getText() + "");
-                mSubtract = true;
+                isSubtraction = true;
                 shownText.setText(null);
             }
         });
@@ -174,6 +175,30 @@ public class MainActivity extends AppCompatActivity  {
                 shownText.setText("");
             }
         });
+        backspace.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isMultiplication == true ||
+                        isAddition == true ||
+                        isMultiplication == true ||
+                        isSubtraction == true)
+                {
+                    isMultiplication = false;
+                    isAddition = false;
+                    isMultiplication = false;
+                    isSubtraction = false;
+                    shownText.setText(mValueOne +"");
+                }
+                else
+                {
+                  String text =  shownText.getText() + "";
+                    if (text != null && text.length() >0)
+                    {
+                        shownText.setText(text.substring(0, text.length() - 1));
+                    }
+                }
+            }
+        });
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,9 +209,9 @@ public class MainActivity extends AppCompatActivity  {
                     isAddition = false;
                 }
 
-                if (mSubtract == true) {
+                if (isSubtraction == true) {
                     shownText.setText(mValueOne - mValueTwo + "");
-                    mSubtract = false;
+                    isSubtraction = false;
                 }
 
                 if (isMultiplication == true) {
