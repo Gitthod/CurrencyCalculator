@@ -231,7 +231,16 @@ public class MainActivity extends AppCompatActivity  {
         button10.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                shownText.setText(shownText.getText() + ".");
+                try
+                {
+                    /* Check if the new string is an actual number otherwise ignore. */
+                    String text = shownText.getText() + ".";
+                    Double.parseDouble(shownText.getText() + ".");
+                    shownText.setText(text);
+                } catch (NumberFormatException e)
+                {
+                    /* Pass. */
+                }
             }
         });
 
