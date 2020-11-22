@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relative1"
     android:layout_width="match_parent"
@@ -23,7 +24,7 @@
         android:layout_below="@+id/edt1"
         android:layout_alignEnd="@+id/button4"
         android:layout_alignRight="@+id/button4"
-        android:layout_marginTop="94dp"
+        android:layout_marginTop="24dp"
         android:text="1" />
 
     <Button
@@ -107,13 +108,9 @@
     <Button
         android:id="@+id/buttonadd"
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/button3"
-        android:layout_alignEnd="@+id/edt1"
-        android:layout_alignRight="@+id/edt1"
-        android:layout_marginStart="46dp"
-        android:layout_marginLeft="46dp"
         android:layout_toRightOf="@+id/button3"
         android:text="+" />
 
@@ -137,8 +134,7 @@
         android:layout_below="@+id/buttonsub"
         android:layout_alignStart="@+id/buttonsub"
         android:layout_alignLeft="@+id/buttonsub"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignEnd="@+id/buttonsub"
         android:text="*" />
 
     <Button
@@ -198,17 +194,19 @@
         android:layout_below="@+id/spinner1"
         android:layout_alignLeft="@id/button5"
         android:layout_marginTop="53dp"
-        android:text="Convert to" />
+        android:text="Convert to"
+        app:backgroundTint="#673AB7" />
 
     <Button
         android:id="@+id/buttonC"
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button9"
-        android:layout_alignStart="@+id/button9"
         android:layout_below="@+id/button9"
-        android:text="C" />
+        android:layout_alignStart="@+id/button9"
+        android:layout_alignLeft="@+id/button9"
+        android:text="C"
+        android:textColor="#F87070" />
 
     <Spinner
         android:id="@+id/spinner2"
