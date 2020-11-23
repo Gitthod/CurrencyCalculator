@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 enum Operations{
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity  {
     EditText shownText;
     Currencies apiCurs;
     float accumulator = 0;
+    private EnumMap<Operations, String> opMap;
 
     Operations currentOp = Operations.NOOP;
 
@@ -55,6 +57,12 @@ public class MainActivity extends AppCompatActivity  {
         spinner1 = findViewById(R.id.spinner1);
         spinner2 = findViewById(R.id.spinner2);
 
+        opMap = new EnumMap(Operations.class);
+        opMap.put(Operations.ADDITION, "+");
+        opMap.put(Operations.MULTIPLICATION, "*");
+        opMap.put(Operations.DIVISION, "/");
+        opMap.put(Operations.SUBTRACTION, "-");
+
         apiCurs = new Currencies();
         addItemsOnSpinners();
         shownText.setText(null);
@@ -79,82 +87,13 @@ public class MainActivity extends AppCompatActivity  {
 
         button0.setOnClickListener(v -> shownText.setText(shownText.getText() + "0"));
 
-        buttonAdd.setOnClickListener(v -> {
-            /* currentOp is NOOP in the beginning or after clicking on C button. */
-            if (currentOp == Operations.NOOP) {
-                try {
-                    accumulator = Float.parseFloat(shownText.getText() + "");
-                }
-                catch (NumberFormatException e) {
-                    /* Pass. */
-                }
+        buttonAdd.setOnClickListener(v -> handleOperation(Operations.ADDITION));
 
-            }
-            evaluateCurrent ();
-            currentOp = Operations.ADDITION;
+        buttonSub.setOnClickListener(v -> handleOperation(Operations.SUBTRACTION));
 
-            /* Print the value of the accumulator in the first line. */
-            if (accumulator != 0) {
-                shownText.setText(accumulator + " +\n");
-            }
-        });
+        buttonMul.setOnClickListener(v -> handleOperation(Operations.MULTIPLICATION));
 
-        buttonSub.setOnClickListener(v -> {
-            /* currentOp is NOOP in the beginning or after clicking on C button. */
-            if (currentOp == Operations.NOOP) {
-                try {
-                    accumulator = Float.parseFloat(shownText.getText() + "");
-                }
-                catch (NumberFormatException e) {
-                    /* Pass. */
-                }
-            }
-            evaluateCurrent ();
-            currentOp = Operations.SUBTRACTION;
-
-            /* Print the value of the accumulator in the first line. */
-            if (accumulator != 0) {
-                shownText.setText(accumulator + " -\n");
-            }
-        });
-
-        buttonMul.setOnClickListener(v -> {
-            /* currentOp is NOOP in the beginning or after clicking on C button. */
-            if (currentOp == Operations.NOOP) {
-                try {
-                    accumulator = Float.parseFloat(shownText.getText() + "");
-                }
-                catch (NumberFormatException e) {
-                    /* Pass. */
-                }
-            }
-            evaluateCurrent ();
-            currentOp = Operations.MULTIPLICATION;
-
-            /* Print the value of the accumulator in the first line. */
-            if (accumulator != 0) {
-                shownText.setText(accumulator + " *\n");
-            }
-        });
-
-        buttonDivision.setOnClickListener(v -> {
-            /* currentOp is NOOP in the beginning or after clicking on C button. */
-            if (currentOp == Operations.NOOP) {
-                try {
-                    accumulator = Float.parseFloat(shownText.getText() + "");
-                }
-                catch (NumberFormatException e) {
-                    /* Pass. */
-                }
-            }
-            evaluateCurrent ();
-            currentOp = Operations.DIVISION;
-
-            /* Print the value of the accumulator in the first line. */
-            if (accumulator != 0) {
-                shownText.setText(accumulator + " /\n");
-            }
-        });
+        buttonDivision.setOnClickListener(v -> handleOperation(Operations.DIVISION));
 
         buttonC.setOnClickListener(v -> {
             shownText.setText("");
@@ -172,7 +111,9 @@ public class MainActivity extends AppCompatActivity  {
                     shownText.setText(text);
                 }
                 catch(NumberFormatException e) {
-                    shownText.setText(null);
+                    /* Reset the calculator. */
+                    shownText.setText("");
+                    accumulator = 0;
                 }
             }
         });
@@ -198,28 +139,38 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         buttonConvert.setOnClickListener(v -> {
-            String fromCur = spinner1.getSelectedItem().toString();
-            String toCur = spinner2.getSelectedItem().toString();
-            float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
-            float toVal = apiCurs.rates.get(toCur).getAsFloat();
-            float modifier = toVal / fromVal;
+            if (apiCurs.success) {
+                String fromCur = spinner1.getSelectedItem().toString();
+                String toCur = spinner2.getSelectedItem().toString();
+                float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
+                float toVal = apiCurs.rates.get(toCur).getAsFloat();
+                float modifier = toVal / fromVal;
 
-            try {
-                /* Check in case the EditText can't be converted to a float. */
-                shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
-            }catch(NumberFormatException e) {
-                /* Pass. */
+                try {
+                    /* Check in case the EditText can't be converted to a float. */
+                    shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
+                } catch (NumberFormatException e) {
+                    /* Reset the calculator. */
+                    shownText.setText("");
+                    accumulator = 0;
+                }
             }
         });
     }
 
-    public void addItemsOnSpinners() {
-
+    public void addItemsOnSpinners()
+    {
         spinner2 = findViewById(R.id.spinner2);
         spinner1 = findViewById(R.id.spinner1);
 
         List<String> list = new ArrayList<>();
-        list.addAll(apiCurs.currencies);
+        if (apiCurs.success) {
+            list.addAll(apiCurs.currencies);
+        }
+        else
+        {
+            list.add("NaN");
+        }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, list);
@@ -234,7 +185,7 @@ public class MainActivity extends AppCompatActivity  {
         try {
             String visibleText = shownText.getText() + "";
             String[] arrOfStr = visibleText.split("\n", 2);
-            if (arrOfStr.length == 2){
+            if (arrOfStr.length == 2) {
                 typed = Float.parseFloat(arrOfStr[1]);
             }
             else
@@ -245,6 +196,8 @@ public class MainActivity extends AppCompatActivity  {
         } catch (NumberFormatException e) {
             typed = 0;
         }
+
+        /* Evaluate the previous expression if the typed text isn't empty. */
         if (shownText.getText().toString().equals("") == false) {
             if (currentOp == Operations.ADDITION) {
                 accumulator += typed;
@@ -261,6 +214,28 @@ public class MainActivity extends AppCompatActivity  {
             if (currentOp == Operations.DIVISION) {
                 accumulator /= typed;
             }
+        }
+    }
+
+    private void handleOperation(Operations op)
+    {
+        /* currentOp is NOOP in the beginning or after clicking on C button. */
+        if (currentOp == Operations.NOOP) {
+            try {
+                accumulator = Float.parseFloat(shownText.getText() + "");
+            }
+            catch (NumberFormatException e) {
+                /* Reset the calculator. */
+                shownText.setText("");
+                accumulator = 0;
+            }
+        }
+        /* Evaluates the expression with the previously typed opertor. */
+        evaluateCurrent ();
+        if (accumulator != 0) {
+            currentOp = op;
+            /* Print the value of the accumulator in the first line. */
+            shownText.setText(accumulator + " " + opMap.get(op) +"\n");
         }
     }
 }

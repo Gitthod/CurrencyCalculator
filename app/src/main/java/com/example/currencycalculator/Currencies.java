@@ -7,8 +7,9 @@ import java.util.Set;
 
 public class Currencies  {
     Set<String> currencies;
-    public JsonObject convertedObject;
+    JsonObject convertedObject;
     JsonObject rates;
+    boolean success;
 
     public Currencies()
     {
@@ -25,8 +26,16 @@ public class Currencies  {
 
         json = apiReq.response;
 
-           convertedObject = new Gson().fromJson(json, JsonObject.class);
-           rates = convertedObject.getAsJsonObject("rates");
-           currencies = rates.keySet();
+        if (json.equals("failed"))
+        {
+            success = false;
+        }
+        else
+        {
+            convertedObject = new Gson().fromJson(json, JsonObject.class);
+            rates = convertedObject.getAsJsonObject("rates");
+            currencies = rates.keySet();
+            success = true;
+        }
     }
 }
