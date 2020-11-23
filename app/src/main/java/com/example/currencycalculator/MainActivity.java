@@ -203,7 +203,13 @@ public class MainActivity extends AppCompatActivity  {
             float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
             float toVal = apiCurs.rates.get(toCur).getAsFloat();
             float modifier = toVal / fromVal;
-            shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
+
+            try {
+                /* Check in case the EditText can't be converted to a float. */
+                shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
+            }catch(NumberFormatException e) {
+                /* Pass. */
+            }
         });
     }
 
