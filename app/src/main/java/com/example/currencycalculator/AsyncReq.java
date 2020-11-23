@@ -9,9 +9,6 @@ import java.net.URL;
 
 class AsyncReq extends AsyncTask<Void, Void, String> {
 
-    private Exception exception;
-    private HttpURLConnection connection;
-    private URL url;
     String response ;
     boolean finished = false;
     @Override
@@ -19,11 +16,12 @@ class AsyncReq extends AsyncTask<Void, Void, String> {
         BufferedReader reader;
         String line;
         response = "init";
+        /* Since this is run on another thread StringBuffer is preferred of SringBuilder. */
         StringBuffer responseContent = new StringBuffer();
 
         try{
-            url = new URL("http://data.fixer.io/api/latest?access_key=7970f0a15d17e57b23dff860969bfa2f");
-            connection = (HttpURLConnection) url.openConnection();
+            URL url = new URL("http://data.fixer.io/api/latest?access_key=7970f0a15d17e57b23dff860969bfa2f");
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
             connection.setReadTimeout(5000);
@@ -45,10 +43,5 @@ class AsyncReq extends AsyncTask<Void, Void, String> {
         }
         finished = true;
         return response;
-    }
-
-    protected void onPostExecute(Void nothing) {
-        // TODO: check this.exception
-        // TODO: do something with the feed
     }
 }

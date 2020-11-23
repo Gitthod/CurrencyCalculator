@@ -1,8 +1,8 @@
 package com.example.currencycalculator;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity  {
 
     Operations currentOp = Operations.NOOP;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,239 +52,170 @@ public class MainActivity extends AppCompatActivity  {
         buttonEqual = findViewById(R.id.buttoneql);
         shownText = findViewById(R.id.edt1);
         backspace = findViewById(R.id.backspace);
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
-        Currencies curS = new Currencies();
-        apiCurs = curS;
+        spinner1 = findViewById(R.id.spinner1);
+        spinner2 = findViewById(R.id.spinner2);
+
+        apiCurs = new Currencies();
         addItemsOnSpinners();
         shownText.setText(null);
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "1");
-            }
-        });
+        button1.setOnClickListener(v -> shownText.setText(shownText.getText() + "1"));
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "2");
-            }
-        });
+        button2.setOnClickListener(v -> shownText.setText(shownText.getText() + "2"));
 
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "3");
-            }
-        });
+        button3.setOnClickListener(v -> shownText.setText(shownText.getText() + "3"));
 
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "4");
-            }
-        });
+        button4.setOnClickListener(v -> shownText.setText(shownText.getText() + "4"));
 
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "5");
-            }
-        });
+        button5.setOnClickListener(v -> shownText.setText(shownText.getText() + "5"));
 
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "6");
-            }
-        });
+        button6.setOnClickListener(v -> shownText.setText(shownText.getText() + "6"));
 
-        button7.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "7");
-            }
-        });
+        button7.setOnClickListener(v -> shownText.setText(shownText.getText() + "7"));
 
-        button8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "8");
-            }
-        });
+        button8.setOnClickListener(v -> shownText.setText(shownText.getText() + "8"));
 
-        button9.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "9");
-            }
-        });
+        button9.setOnClickListener(v -> shownText.setText(shownText.getText() + "9"));
 
-        button0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText(shownText.getText() + "0");
-            }
-        });
+        button0.setOnClickListener(v -> shownText.setText(shownText.getText() + "0"));
 
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentOp == Operations.NOOP) {
-                    try {
-                        accumulator = Float.parseFloat(shownText.getText() + "");
-                    }catch (NumberFormatException e) {
-
-                    }
-
+        buttonAdd.setOnClickListener(v -> {
+            /* currentOp is NOOP in the beginning or after clicking on C button. */
+            if (currentOp == Operations.NOOP) {
+                try {
+                    accumulator = Float.parseFloat(shownText.getText() + "");
                 }
-                evaluateCurrent ();
-                currentOp = Operations.ADDITION;
-                if (accumulator != 0) {
-                    shownText.setText(accumulator + " +\n");
+                catch (NumberFormatException e) {
+                    /* Pass. */
+                }
+
+            }
+            evaluateCurrent ();
+            currentOp = Operations.ADDITION;
+
+            /* Print the value of the accumulator in the first line. */
+            if (accumulator != 0) {
+                shownText.setText(accumulator + " +\n");
+            }
+        });
+
+        buttonSub.setOnClickListener(v -> {
+            /* currentOp is NOOP in the beginning or after clicking on C button. */
+            if (currentOp == Operations.NOOP) {
+                try {
+                    accumulator = Float.parseFloat(shownText.getText() + "");
+                }
+                catch (NumberFormatException e) {
+                    /* Pass. */
                 }
             }
-        });
+            evaluateCurrent ();
+            currentOp = Operations.SUBTRACTION;
 
-        buttonSub.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentOp == Operations.NOOP) {
-                    try {
-                        accumulator = Float.parseFloat(shownText.getText() + "");
-                    }
-                    catch (NumberFormatException e) {
-                        /* Pass. */
-                    }
-                }
-                evaluateCurrent ();
-                currentOp = Operations.SUBTRACTION;
-                if (accumulator != 0) {
-                    shownText.setText(accumulator + " -\n");
-                }
+            /* Print the value of the accumulator in the first line. */
+            if (accumulator != 0) {
+                shownText.setText(accumulator + " -\n");
             }
         });
 
-        buttonMul.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentOp == Operations.NOOP) {
-                    try {
-                        accumulator = Float.parseFloat(shownText.getText() + "");
-                    }
-                    catch (NumberFormatException e) {
-                        /* Pass. */
-                    }
+        buttonMul.setOnClickListener(v -> {
+            /* currentOp is NOOP in the beginning or after clicking on C button. */
+            if (currentOp == Operations.NOOP) {
+                try {
+                    accumulator = Float.parseFloat(shownText.getText() + "");
                 }
-                evaluateCurrent ();
-                currentOp = Operations.MULTIPLICATION;
-                if (accumulator != 0) {
-                    shownText.setText(accumulator + " *\n");
+                catch (NumberFormatException e) {
+                    /* Pass. */
                 }
+            }
+            evaluateCurrent ();
+            currentOp = Operations.MULTIPLICATION;
+
+            /* Print the value of the accumulator in the first line. */
+            if (accumulator != 0) {
+                shownText.setText(accumulator + " *\n");
             }
         });
 
-        buttonDivision.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentOp == Operations.NOOP) {
-                    try {
-                        accumulator = Float.parseFloat(shownText.getText() + "");
-                    }
-                    catch (NumberFormatException e) {
-                        /* Pass. */
-                    }
+        buttonDivision.setOnClickListener(v -> {
+            /* currentOp is NOOP in the beginning or after clicking on C button. */
+            if (currentOp == Operations.NOOP) {
+                try {
+                    accumulator = Float.parseFloat(shownText.getText() + "");
                 }
-                evaluateCurrent ();
-                currentOp = Operations.DIVISION;
-                if (accumulator != 0) {
-                    shownText.setText(accumulator + " /\n");
+                catch (NumberFormatException e) {
+                    /* Pass. */
                 }
             }
-        });
+            evaluateCurrent ();
+            currentOp = Operations.DIVISION;
 
-        buttonC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shownText.setText("");
-                accumulator = 0;
+            /* Print the value of the accumulator in the first line. */
+            if (accumulator != 0) {
+                shownText.setText(accumulator + " /\n");
             }
         });
 
-        backspace.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String text =  shownText.getText() + "";
-                if (text != null && text.length() >0)
-                {
-                    try
-                    {
-                        /* Check if the new string is an actual number otherwise clear the text. */
-                        text = text.substring(0, text.length() - 1);
-                        Double.parseDouble(text);
-                        shownText.setText(text);
-                    }
-                    catch(NumberFormatException e)
-                    {
-                        shownText.setText(null);
-                    }
-                }
-            }
+        buttonC.setOnClickListener(v -> {
+            shownText.setText("");
+            accumulator = 0;
         });
 
-        buttonEqual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                evaluateCurrent ();
-                shownText.setText(accumulator + "");
-                currentOp = Operations.NOOP;
-            }
-        });
-
-        button10.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try
-                {
-                    /* Check if the new string is an actual number otherwise ignore. */
-                    String text = shownText.getText() + ".";
-                    Double.parseDouble(shownText.getText() + ".");
+        backspace.setOnClickListener(v -> {
+            String text =  shownText.getText() + "";
+            if (0 < text.length())
+            {
+                try {
+                    /* Check if the new string is an actual number otherwise clear the text. */
+                    text = text.substring(0, text.length() - 1);
+                    Double.parseDouble(text);
                     shownText.setText(text);
-                } catch (NumberFormatException e)
-                {
-                    /* Do nothing since new dot doesn't create a valid number */
+                }
+                catch(NumberFormatException e) {
+                    shownText.setText(null);
                 }
             }
         });
 
-        buttonConvert.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String fromCur = spinner1.getSelectedItem().toString();
-                String toCur = spinner2.getSelectedItem().toString();
-                float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
-                float toVal = apiCurs.rates.get(toCur).getAsFloat();
-                float modifier = toVal / fromVal;
-                shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
+        buttonEqual.setOnClickListener(v -> {
+
+            evaluateCurrent ();
+            shownText.setText(accumulator + "");
+            currentOp = Operations.NOOP;
+        });
+
+        button10.setOnClickListener(v -> {
+            try
+            {
+                /* Check if the new string is an actual number otherwise ignore. */
+                String text = shownText.getText() + ".";
+                Double.parseDouble(shownText.getText() + ".");
+                shownText.setText(text);
+            } catch (NumberFormatException e)
+            {
+                /* Do nothing since new dot doesn't create a valid number */
             }
+        });
+
+        buttonConvert.setOnClickListener(v -> {
+            String fromCur = spinner1.getSelectedItem().toString();
+            String toCur = spinner2.getSelectedItem().toString();
+            float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
+            float toVal = apiCurs.rates.get(toCur).getAsFloat();
+            float modifier = toVal / fromVal;
+            shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
         });
     }
 
     public void addItemsOnSpinners() {
 
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        spinner2 = findViewById(R.id.spinner2);
+        spinner1 = findViewById(R.id.spinner1);
 
-        List<String> list = new ArrayList<String>();
-        for (String s:apiCurs.currencies)
-        {
-            list.add(s);
-        }
+        List<String> list = new ArrayList<>();
+        list.addAll(apiCurs.currencies);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, list);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner2.setAdapter(dataAdapter);

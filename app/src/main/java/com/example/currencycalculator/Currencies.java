@@ -15,10 +15,14 @@ public class Currencies  {
         String json;
         AsyncReq apiReq = new AsyncReq();
         apiReq.execute();
+        /* The Execution of the API request in another thread is required otherwise android
+         * UI can crash.
+         */
         while (apiReq.finished == false)
         {
-
+            /* Stall. */
         }
+
         json = apiReq.response;
 
            convertedObject = new Gson().fromJson(json, JsonObject.class);
