@@ -194,7 +194,13 @@ public class MainActivity extends AppCompatActivity  {
             }
 
         } catch (NumberFormatException e) {
-            typed = 0;
+            /* Typed has to be operation neutral. */
+            if (currentOp == Operations.ADDITION || currentOp == Operations.SUBTRACTION) {
+                typed = 0;
+            }
+            else {
+                typed = 1;
+            }
         }
 
         /* Evaluate the previous expression if the typed text isn't empty. */
