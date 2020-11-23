@@ -141,7 +141,9 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 evaluateCurrent ();
                 currentOp = Operations.ADDITION;
-                shownText.setText(null);
+                if (accumulator != 0) {
+                    shownText.setText(accumulator + " +\n");
+                }
             }
         });
 
@@ -158,7 +160,9 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 evaluateCurrent ();
                 currentOp = Operations.SUBTRACTION;
-                shownText.setText(null);
+                if (accumulator != 0) {
+                    shownText.setText(accumulator + " -\n");
+                }
             }
         });
 
@@ -175,7 +179,9 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 evaluateCurrent ();
                 currentOp = Operations.MULTIPLICATION;
-                shownText.setText(null);
+                if (accumulator != 0) {
+                    shownText.setText(accumulator + " *\n");
+                }
             }
         });
 
@@ -192,9 +198,12 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 evaluateCurrent ();
                 currentOp = Operations.DIVISION;
-                shownText.setText(null);
+                if (accumulator != 0) {
+                    shownText.setText(accumulator + " /\n");
+                }
             }
         });
+
         buttonC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +211,7 @@ public class MainActivity extends AppCompatActivity  {
                 accumulator = 0;
             }
         });
+
         backspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -222,11 +232,12 @@ public class MainActivity extends AppCompatActivity  {
                 }
             }
         });
+
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                evaluateCurrent ();
 
+                evaluateCurrent ();
                 shownText.setText(accumulator + "");
                 currentOp = Operations.NOOP;
             }
@@ -243,7 +254,7 @@ public class MainActivity extends AppCompatActivity  {
                     shownText.setText(text);
                 } catch (NumberFormatException e)
                 {
-                    /* Pass. */
+                    /* Do nothing since new dot doesn't create a valid number */
                 }
             }
         });
@@ -283,7 +294,16 @@ public class MainActivity extends AppCompatActivity  {
     {
         float typed;
         try {
-            typed = Float.parseFloat(shownText.getText() + "");
+            String visibleText = shownText.getText() + "";
+            String[] arrOfStr = visibleText.split("\n", 2);
+            if (arrOfStr.length == 2){
+                typed = Float.parseFloat(arrOfStr[1]);
+            }
+            else
+            {
+                typed = Float.parseFloat(visibleText);
+            }
+
         } catch (NumberFormatException e) {
             typed = 0;
         }
