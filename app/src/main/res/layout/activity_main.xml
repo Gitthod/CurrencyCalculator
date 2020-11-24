@@ -193,18 +193,11 @@
         android:layout_alignRight="@+id/buttondiv"
         android:text="=" />
 
-    <Spinner
-        android:id="@+id/spinner1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/buttoneql"
-        android:layout_marginBottom="-50dp" />
-
     <Button
         android:id="@+id/buttonConvert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner1"
+        android:layout_below="@+id/buttoneql"
         android:layout_alignLeft="@id/button5"
         android:layout_marginTop="53dp"
         android:text="Convert to"
@@ -225,8 +218,21 @@
         android:id="@+id/spinner2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/buttoneql"
+        android:layout_alignTop="@+id/buttonConvert"
         android:layout_alignBottom="@+id/buttonConvert"
-        android:layout_marginBottom="-50dp"/>
+        android:layout_marginLeft="15dp"
+        android:layout_toRightOf="@+id/buttonConvert"
+        android:background="#EFEFEF" />
 
-
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttoneql"
+        android:layout_alignTop="@+id/buttonConvert"
+        android:layout_alignBottom="@+id/buttonConvert"
+        android:layout_marginRight="15dp"
+        android:layout_toLeftOf="@+id/buttonConvert"
+        android:background="#EFEFEF" />
 </RelativeLayout>

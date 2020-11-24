@@ -5,7 +5,7 @@ Simple Android calculator that supports currency conversion
 <li>Supports only basic arithmetic operations</li>
 </p>
 
-![](Gui.png)
+![alt text](https://github.com/Gitthod/CurrencyCalculator/blob/master/Gui.PNG?raw=true)
 
 ## Documentation
 
