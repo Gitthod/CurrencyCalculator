@@ -20,7 +20,8 @@ class AsyncReq extends AsyncTask<Void, Void, String> {
         StringBuffer responseContent = new StringBuffer();
 
         try{
-            URL url = new URL("http://data.fixer.io/api/latest?access_key=7970f0a15d17e57b23dff860969bfa2f");
+            String Api_Key = "7970f0a15d17e57b23dff860969bfa2f";
+            URL url = new URL("http://data.fixer.io/api/latest?access_key=" + Api_Key);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.setConnectTimeout(5000);
