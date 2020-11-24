@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /* Connect all the buttons of the calculator. */
         button0 =  findViewById(R.id.button0);
         button1 =  findViewById(R.id.button1);
         button2 =  findViewById(R.id.button2);
@@ -52,40 +54,51 @@ public class MainActivity extends AppCompatActivity  {
         buttonDivision = findViewById(R.id.buttondiv);
         buttonConvert = findViewById(R.id.buttonConvert);
         buttonEqual = findViewById(R.id.buttoneql);
-        shownText = findViewById(R.id.edt1);
         backspace = findViewById(R.id.backspace);
+
+        /* Area where editable text resides. */
+        shownText = findViewById(R.id.edt1);
+
+        /* Drop down lists that contain currencies. */
         spinner1 = findViewById(R.id.spinner1);
         spinner2 = findViewById(R.id.spinner2);
 
+        /* Map operations to actual symbols. */
         opMap = new EnumMap(Operations.class);
         opMap.put(Operations.ADDITION, "+");
         opMap.put(Operations.MULTIPLICATION, "*");
         opMap.put(Operations.DIVISION, "/");
         opMap.put(Operations.SUBTRACTION, "-");
 
+        /* Initialize the object that fetches the exchange rates from fixer.io */
         apiCurs = new Currencies();
+
+        /* Populate the dropdown lists with the available currencies. */
         addItemsOnSpinners();
-        shownText.setText(null);
 
-        button1.setOnClickListener(v -> shownText.setText(shownText.getText() + "1"));
+        /* Starting with empty text. */
+        shownText.setText("");
 
-        button2.setOnClickListener(v -> shownText.setText(shownText.getText() + "2"));
+        /* Button driver reactions. */
+        button1.setOnClickListener(v -> updateText("1"));
 
-        button3.setOnClickListener(v -> shownText.setText(shownText.getText() + "3"));
+        button2.setOnClickListener(v -> updateText("2"));
 
-        button4.setOnClickListener(v -> shownText.setText(shownText.getText() + "4"));
+        button3.setOnClickListener(v -> updateText("3"));
 
-        button5.setOnClickListener(v -> shownText.setText(shownText.getText() + "5"));
+        button4.setOnClickListener(v -> updateText("4"));
 
-        button6.setOnClickListener(v -> shownText.setText(shownText.getText() + "6"));
+        button5.setOnClickListener(v -> updateText("5"));
 
-        button7.setOnClickListener(v -> shownText.setText(shownText.getText() + "7"));
+        button6.setOnClickListener(v -> updateText("6"));
 
-        button8.setOnClickListener(v -> shownText.setText(shownText.getText() + "8"));
+        button7.setOnClickListener(v -> updateText("7"));
 
-        button9.setOnClickListener(v -> shownText.setText(shownText.getText() + "9"));
+        button8.setOnClickListener(v -> updateText("8"));
 
-        button0.setOnClickListener(v -> shownText.setText(shownText.getText() + "0"));
+        button9.setOnClickListener(v -> updateText("9"));
+
+        button0.setOnClickListener(v -> updateText("0"));
 
         buttonAdd.setOnClickListener(v -> handleOperation(Operations.ADDITION));
 
@@ -105,10 +118,19 @@ public class MainActivity extends AppCompatActivity  {
             if (0 < text.length())
             {
                 try {
+                    String number;
+                    String[] arrOfStr = text.split("\n", 2);
+                    if (arrOfStr.length == 2) {
+                        number = arrOfStr[1];
+                    }
+                    else {
+                        number = text;
+                    }
+
                     /* Check if the new string is an actual number otherwise clear the text. */
-                    text = text.substring(0, text.length() - 1);
-                    Double.parseDouble(text);
-                    shownText.setText(text);
+                    Double.parseDouble(number);
+                    shownText.setText(text.substring(0, text.length() - 1));
+                    shownText.setSelection(shownText.getText().length());
                 }
                 catch(NumberFormatException e) {
                     /* Reset the calculator. */
@@ -119,9 +141,9 @@ public class MainActivity extends AppCompatActivity  {
         });
 
         buttonEqual.setOnClickListener(v -> {
-
             evaluateCurrent ();
             shownText.setText(accumulator + "");
+            shownText.setSelection(shownText.getText().length());
             currentOp = Operations.NOOP;
         });
 
@@ -158,6 +180,9 @@ public class MainActivity extends AppCompatActivity  {
         });
     }
 
+    /* Populate the dropdown lists with the available currencies or with NaN if API
+     * call fails.
+     */
     public void addItemsOnSpinners()
     {
         spinner2 = findViewById(R.id.spinner2);
@@ -179,6 +204,7 @@ public class MainActivity extends AppCompatActivity  {
         spinner1.setAdapter(dataAdapter);
     }
 
+    /* Evaluate the current expression. */
     private void evaluateCurrent ()
     {
         float typed;
@@ -223,6 +249,7 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    /* Handle the reaction when issuing an operatio. */
     private void handleOperation(Operations op)
     {
         /* currentOp is NOOP in the beginning or after clicking on C button. */
@@ -233,15 +260,24 @@ public class MainActivity extends AppCompatActivity  {
             catch (NumberFormatException e) {
                 /* Reset the calculator. */
                 shownText.setText("");
+                shownText.setSelection(shownText.getText().length());
                 accumulator = 0;
             }
         }
-        /* Evaluates the expression with the previously typed opertor. */
+        /* Evaluates the expression with the previously typed operator. */
         evaluateCurrent ();
         if (accumulator != 0) {
             currentOp = op;
             /* Print the value of the accumulator in the first line. */
             shownText.setText(accumulator + " " + opMap.get(op) +"\n");
+            shownText.setSelection(shownText.getText().length());
         }
+    }
+
+    /* Updates the visible text and cursor position. */
+    private void updateText(String digit)
+    {
+        shownText.setText(shownText.getText() + digit);
+        shownText.setSelection(shownText.getText().length());
     }
 }
