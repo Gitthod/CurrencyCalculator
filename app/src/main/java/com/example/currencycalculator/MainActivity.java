@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity  {
 
         button0.setOnClickListener(v -> updateText("0"));
 
+        button10.setOnClickListener(v -> updateText("."));
+
         buttonAdd.setOnClickListener(v -> handleOperation(Operations.ADDITION));
 
         buttonSub.setOnClickListener(v -> handleOperation(Operations.SUBTRACTION));
@@ -157,19 +159,6 @@ public class MainActivity extends AppCompatActivity  {
             shownText.setText(accumulator + "");
             shownText.setSelection(shownText.getText().length());
             currentOp = Operations.NOOP;
-        });
-
-        button10.setOnClickListener(v -> {
-            try
-            {
-                /* Check if the new string is an actual number otherwise ignore. */
-                String text = shownText.getText() + ".";
-                Double.parseDouble(shownText.getText() + ".");
-                shownText.setText(text);
-            } catch (NumberFormatException e)
-            {
-                /* Do nothing since new dot doesn't create a valid number */
-            }
         });
 
         buttonConvert.setOnClickListener(v -> {
@@ -287,9 +276,31 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /* Updates the visible text and cursor position. */
-    private void updateText(String digit)
+    private void updateText(String numeric)
     {
-        shownText.setText(shownText.getText() + digit);
-        shownText.setSelection(shownText.getText().length());
+        try
+        {
+            /* Check if the new string is an actual number otherwise ignore. */
+            String text = shownText.getText() + numeric;
+            String number;
+            String[] arrOfStr = text.split("\n", 2);
+
+            if (arrOfStr.length == 2) {
+                /* If we are in the middle of an operation parse only the number in the 2nd line. */
+                number = arrOfStr[1];
+            }
+            else
+            {
+                number = text;
+            }
+
+            /* The next line will through an exception and ignore the character incase of invalid result. */
+            Double.parseDouble(number);
+            shownText.setText(text);
+            shownText.setSelection(shownText.getText().length());
+        } catch (NumberFormatException e)
+        {
+            /* Do nothing since new dot doesn't create a valid number */
+        }
     }
 }
