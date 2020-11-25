@@ -76,9 +76,6 @@ public class MainActivity extends AppCompatActivity  {
         /* Populate the dropdown lists with the available currencies. */
         addItemsOnSpinners();
 
-        /* Starting with empty text. */
-        shownText.setText("");
-
         /* Button driver reactions. */
         button1.setOnClickListener(v -> updateText("1"));
 
@@ -111,8 +108,7 @@ public class MainActivity extends AppCompatActivity  {
         buttonDivision.setOnClickListener(v -> handleOperation(Operations.DIVISION));
 
         buttonC.setOnClickListener(v -> {
-            shownText.setText("");
-            shownText.setSelection(0);
+            updateTextAndCursor("");
             accumulator = 0;
         });
 
@@ -143,13 +139,11 @@ public class MainActivity extends AppCompatActivity  {
 
                     /* Check if the new string is an actual number otherwise clear the text. */
                     Double.parseDouble(number);
-                    shownText.setText(text.substring(0, text.length() - 1));
-                    shownText.setSelection(shownText.getText().length());
+                    updateTextAndCursor(text.substring(0, text.length() - 1));
                 }
                 catch(NumberFormatException e) {
                     /* Reset the calculator. */
-                    shownText.setText("");
-                    shownText.setSelection(shownText.getText().length());
+                    updateTextAndCursor("");
                     accumulator = 0;
                 }
             }
@@ -157,8 +151,7 @@ public class MainActivity extends AppCompatActivity  {
 
         buttonEqual.setOnClickListener(v -> {
             evaluateCurrent ();
-            shownText.setText(accumulator + "");
-            shownText.setSelection(shownText.getText().length());
+            updateTextAndCursor(accumulator + "");
             currentOp = Operations.NOOP;
         });
 
@@ -172,10 +165,10 @@ public class MainActivity extends AppCompatActivity  {
 
                 try {
                     /* Check in case the EditText can't be converted to a float. */
-                    shownText.setText(Float.parseFloat(shownText.getText() + "") * modifier + "");
+                    updateTextAndCursor(Float.parseFloat(shownText.getText() + "") * modifier + "");
                 } catch (NumberFormatException e) {
                     /* Reset the calculator. */
-                    shownText.setText("");
+                    updateTextAndCursor("");
                     accumulator = 0;
                 }
             }
@@ -265,8 +258,7 @@ public class MainActivity extends AppCompatActivity  {
             }
             catch (NumberFormatException e) {
                 /* Reset the calculator. */
-                shownText.setText("");
-                shownText.setSelection(shownText.getText().length());
+                updateTextAndCursor("");
                 accumulator = 0;
             }
         }
@@ -275,8 +267,7 @@ public class MainActivity extends AppCompatActivity  {
         if (accumulator != 0) {
             currentOp = op;
             /* Print the value of the accumulator in the first line. */
-            shownText.setText(accumulator + " " + opMap.get(op) +"\n");
-            shownText.setSelection(shownText.getText().length());
+            updateTextAndCursor(accumulator + " " + opMap.get(op) +"\n");
         }
     }
 
@@ -301,11 +292,16 @@ public class MainActivity extends AppCompatActivity  {
 
             /* The next line will through an exception and ignore the character incase of invalid result. */
             Double.parseDouble(number);
-            shownText.setText(text);
-            shownText.setSelection(shownText.getText().length());
+            updateTextAndCursor(text);
         } catch (NumberFormatException e)
         {
             /* Do nothing since new dot doesn't create a valid number */
         }
+    }
+
+    private void updateTextAndCursor(String text)
+    {
+        shownText.setText(text);
+        shownText.setSelection(shownText.getText().length());
     }
 }
