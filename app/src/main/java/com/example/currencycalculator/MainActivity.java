@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity  {
     Spinner spinner1, spinner2;
     EditText shownText;
     Currencies apiCurs;
-    float accumulator = 0;
+    double accumulator = 0;
     private EnumMap<Operations, String> opMap;
 
     Operations currentOp = Operations.NOOP;
@@ -159,13 +159,13 @@ public class MainActivity extends AppCompatActivity  {
             if (apiCurs.success) {
                 String fromCur = spinner1.getSelectedItem().toString();
                 String toCur = spinner2.getSelectedItem().toString();
-                float fromVal = apiCurs.rates.get(fromCur).getAsFloat();
-                float toVal = apiCurs.rates.get(toCur).getAsFloat();
-                float modifier = toVal / fromVal;
+                Double fromVal = apiCurs.rates.get(fromCur).getAsDouble();
+                Double toVal = apiCurs.rates.get(toCur).getAsDouble();
+                Double modifier = toVal / fromVal;
 
                 try {
-                    /* Check in case the EditText can't be converted to a float. */
-                    updateTextAndCursor(Float.parseFloat(shownText.getText() + "") * modifier + "");
+                    /* Check in case the EditText can't be converted to a double. */
+                    updateTextAndCursor(Double.parseDouble(shownText.getText() + "") * modifier + "");
                 } catch (NumberFormatException e) {
                     /* Reset the calculator. */
                     updateTextAndCursor("");
@@ -202,16 +202,16 @@ public class MainActivity extends AppCompatActivity  {
     /* Evaluate the current expression. */
     private void evaluateCurrent ()
     {
-        float typed;
+        double typed;
         try {
             String visibleText = shownText.getText() + "";
             String[] arrOfStr = visibleText.split("\n", 2);
             if (arrOfStr.length == 2) {
-                typed = Float.parseFloat(arrOfStr[1]);
+                typed = Double.parseDouble(arrOfStr[1]);
             }
             else
             {
-                typed = Float.parseFloat(visibleText);
+                typed = Double.parseDouble(visibleText);
             }
 
         } catch (NumberFormatException e) {
@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity  {
         /* currentOp is NOOP in the beginning or after clicking on C button. */
         if (currentOp == Operations.NOOP) {
             try {
-                accumulator = Float.parseFloat(shownText.getText() + "");
+                accumulator = Double.parseDouble(shownText.getText() + "");
             }
             catch (NumberFormatException e) {
                 /* Reset the calculator. */
