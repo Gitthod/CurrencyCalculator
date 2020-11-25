@@ -264,11 +264,11 @@ public class MainActivity extends AppCompatActivity  {
         }
         /* Evaluates the expression with the previously typed operator. */
         evaluateCurrent ();
-        if (accumulator != 0) {
-            currentOp = op;
-            /* Print the value of the accumulator in the first line. */
-            updateTextAndCursor(accumulator + " " + opMap.get(op) +"\n");
-        }
+        /* Update the current operator. */
+        currentOp = op;
+
+        /* Print the value of the accumulator in the first line. */
+        updateTextAndCursor(accumulator + " " + opMap.get(op) +"\n");
     }
 
     /* Updates the visible text and cursor position. */
