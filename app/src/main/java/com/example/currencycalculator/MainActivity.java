@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity  {
 
         buttonC.setOnClickListener(v -> {
             shownText.setText("");
+            shownText.setSelection(0);
             accumulator = 0;
         });
 
@@ -246,6 +247,10 @@ public class MainActivity extends AppCompatActivity  {
 
             if (currentOp == Operations.DIVISION) {
                 accumulator /= typed;
+            }
+
+            if (currentOp == Operations.NOOP) {
+                accumulator = typed;
             }
         }
     }
