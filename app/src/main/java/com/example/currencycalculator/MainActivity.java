@@ -121,10 +121,21 @@ public class MainActivity extends AppCompatActivity  {
                     String number;
                     String[] arrOfStr = text.split("\n", 2);
                     if (arrOfStr.length == 2) {
-                        number = arrOfStr[1];
+                        if (arrOfStr[1].length() > 1) {
+                            number = arrOfStr[1].substring(0, arrOfStr[1].length() - 1);
+                        }
+                        else if (arrOfStr[1].length() == 1)
+                        {
+                            /* A valid number to represent an empty new line. */
+                            number="0";
+                        }
+                        else
+                        {
+                            throw new NumberFormatException();
+                        }
                     }
                     else {
-                        number = text;
+                        number = text.substring(0, text.length() - 1);
                     }
 
                     /* Check if the new string is an actual number otherwise clear the text. */
@@ -135,6 +146,7 @@ public class MainActivity extends AppCompatActivity  {
                 catch(NumberFormatException e) {
                     /* Reset the calculator. */
                     shownText.setText("");
+                    shownText.setSelection(shownText.getText().length());
                     accumulator = 0;
                 }
             }
